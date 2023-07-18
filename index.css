@@ -24,6 +24,10 @@
     margin: 10px;
 }
 
+.body {
+    text-align: center;
+}
+
 .rest-card {
     margin: 4px;
     padding: 5px;
@@ -49,10 +53,14 @@
     width: 100%;
 }
 
+.filter-btn {
+    margin: 10px;
+    cursor: pointer;
+}
 
 .footer {
     align-items: center;
-    position: fixed;
+    /* position: fixed; */
     left: 0;
     bottom: 0;
     width: 100%;

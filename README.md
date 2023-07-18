@@ -18,3 +18,28 @@
 - HTTPS host
 - Tree Shaking - remove unused code
 - Different dev and prod bundles
+
+# Food Ordering App
+/**
+ * Header
+ * - Logo
+ * - Nav Items 
+ * Body
+ * - Search, Filter
+ * - RestaurantContainer
+ *   -  RestaurentCard
+ *      - Image
+ *      - Name of restaurant, Star Rating, cuisine, delivery time
+ * Footer
+ * - Copyright
+ * - Links
+ * - Address
+ * - Contact
+ */
+
+
+ # React Hooks
+  (Normal JS utlity functions)
+
+  - useState() -> Superpowerful react variables
+  - useEffect() -> 
