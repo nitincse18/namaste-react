@@ -1,63 +1,58 @@
 import RestaurantCard from "./RestaurantCard";
-import restData from "../../utils/mockData";
-import { useState } from 'react'; // Named import {}
+import { useEffect, useState } from 'react'; // Named import {}
+import Shimmer from "./Shimmer";
+import { Link } from "react-router-dom";
 
 const Body = () => {
-  // Local State variable  
-  let listOfRestaruntsData = [
-    {
-      data: {
-        type: "F",
-        id: "450663",
-        name: "Chaayos Chai+Snacks=Relax",
-        cloudinaryImageId: "0a6f66d75eb042123e34d89bef7189ce",
-        cuisines: ["South Indian", "North Indian", "Biryani"],
-        costForTwo: 25000,
-        deliveryTime: 22,
-        avgRating: 4.1,
-      }
-    },
-    {
-      data:{
-        type: "F",
-        "id": "424658",
-        name: "Asha Tiffins",
-        cloudinaryImageId: "hpncnz3sfv3gigsukkts",
-        cuisines: ["South Indian", "North Indian", "Biryani"],
-        costForTwo: 25000,
-        deliveryTime: 22,
-        avgRating: 3.9,
-      }
-    },
-    {
-      data:{
-        type: "F",
-        id: "4506637",
-        name: "Rajwadi",
-        cloudinaryImageId: "ioj0cpj1gbxqx6j68osj",
-        cuisines: ["North Indian",
-        "Desserts",
-        "Beverages",
-        "Punjabi"],
-        costForTwo: 25000,
-        deliveryTime: 22,
-        avgRating: 4.3,
-      },
-    },
-  ];
 
   // Local state variable- Super powerful variable
-  const [listOfRestarunts, setListOfRestarunts] = useState(restData)
+  const [listOfRestarunts, setListOfRestarunts] = useState([]);
+  const [filteredRestarunts, setFilteredRestarunts] = useState([]);
+
+  const [searchText, setSearchText] = useState('')
   
-  return (
+  // Whenever state variables update, react triggers a reconcilation cycle(re-renders the components)
+
+  useEffect(()=>{
+    fetchData()
+  }, []);
+
+  const fetchData = async () => {
+    const data =await fetch('https://www.swiggy.com/dapi/restaurants/list/v5?lat=12.9440703&lng=77.67222389999999&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING');
+
+    const json = await data.json()
+
+    console.log(json);
+    // Optional Chaining
+    setListOfRestarunts(json?.data?.cards[5]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
+    setFilteredRestarunts(json?.data?.cards[5]?.card?.card?.gridElements?.infoWithStyle?.restaurants)
+  }
+
+
+  return listOfRestarunts.length === 0 ? <Shimmer /> : (
     <div className="body">
       <div className="filter">
+        <div className="search">
+          <input type="text"
+           className="search-box"
+            value={searchText}
+            onChange={(e) => {
+              setSearchText(e.target.value)
+            }}/>
+          <button onClick={() => {
+            // Filter the restraunt cards and update UI
+            // searchText
+            const filteredRest = listOfRestarunts.filter((res) => res.info.name.toLowerCase().includes(searchText.toLowerCase()));
+
+            setFilteredRestarunts(filteredRest)
+          }}>Search</button>
+        </div>
         <button
           className="filter-btn"
           onClick={() => {
             
             const filteredlist = listOfRestarunts.filter(
-              (rest) => rest.data.avgRating > 4.3
+              (rest) => rest.info.avgRating > 4.3
             );
             setListOfRestarunts(filteredlist)
             console.log(filteredlist);
@@ -68,8 +63,14 @@ const Body = () => {
       </div>
       <div className="rest-container">
         {/* RestaurantCard */}
-        {listOfRestarunts.map((restaurant) => (
-          <RestaurantCard restData={restaurant} key={restaurant.data.id} />
+        {filteredRestarunts.map((restaurant) => (
+          <Link 
+            key={restaurant?.info?.id}
+            to={"/restaurants/"+restaurant?.info?.id}
+          > 
+            <RestaurantCard restData={restaurant?.info} key={restaurant?.info.id} 
+            />
+            </Link>
         ))}
       </div>
     </div>
