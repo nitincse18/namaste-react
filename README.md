@@ -47,3 +47,13 @@
  # 2 types Routing in web apps
     - Client Side Routing
     - Server Side Routing
+
+
+# Ways to write CSS
+   - Scss, Sass
+   - Styled-component -> styled-components.com
+   - Meterial UI
+   - Bootstrap
+   - Chakra UI
+   - ant design
+   - Tailwind CSS
