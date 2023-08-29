@@ -1,6 +1,6 @@
 import React, { lazy, Suspense, useEffect, useState } from "react";
-import ReactDOM  from "react-dom/client";
-import Header  from "./components/Header";
+import ReactDOM from "react-dom/client";
+import Header from "./components/Header";
 import Body from "./components/Body";
 import Footer from "./components/Footer";
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
@@ -9,6 +9,9 @@ import Contact from "./components/Contact";
 import Error from "./components/Error";
 import { RestaurantMenu } from "./components/RestaurantMenu";
 import UserContext from "./utils/UserContext";
+import { Provider } from "react-redux";
+import appStore from "./utils/appStore";
+import Cart from "./components/Cart";
 // import Grocery from "./components/Grocery";
 
 // Chunking
@@ -17,30 +20,31 @@ import UserContext from "./utils/UserContext";
 // Lazy loading
 // On demand loading
 
-const Grocery = lazy(() => import("./components/Grocery") )
+const Grocery = lazy(() => import("./components/Grocery"));
 
 const AppLayout = () => {
-
   const [userName, setUserName] = useState();
 
   useEffect(async () => {
-    const data = await fetch('https://api.github.com/users/editi-bft');
-    const json = await  data.json();
-    setUserName(json.name)
+    const data = await fetch("https://api.github.com/users/editi-bft");
+    const json = await data.json();
+    setUserName(json.name);
   }, []);
 
   return (
-    <UserContext.Provider value={{loggedInUser: userName, setUserName}}>
-    <div className="app">
-      {/* Header */}
-      <Header />
-      
-      <Outlet />
-      {/* <Footer /> */}
-    </div>
-    </UserContext.Provider>
-  )
-}
+    <Provider store={appStore}>
+      <UserContext.Provider value={{ loggedInUser: userName, setUserName }}>
+        <div className="app">
+          {/* Header */}
+          <Header />
+
+          <Outlet />
+          {/* <Footer /> */}
+        </div>
+      </UserContext.Provider>
+    </Provider>
+  );
+};
 
 const appRouter = createBrowserRouter([
   {
@@ -49,29 +53,36 @@ const appRouter = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Body />
+        element: <Body />,
       },
       {
         path: "/about",
-        element: <About />
+        element: <About />,
       },
       {
         path: "/contact",
-        element: <Contact />
+        element: <Contact />,
       },
       {
         path: "/grocery",
-        element: <Suspense fallback={<h1>loading...</h1>} ><Grocery /></Suspense>
+        element: (
+          <Suspense fallback={<h1>loading...</h1>}>
+            <Grocery />
+          </Suspense>
+        ),
       },
       {
         path: "/restaurants/:resId",
-        element: <RestaurantMenu />
+        element: <RestaurantMenu />,
+      },
+      {
+        path: 'cart',
+        element: <Cart />
       }
     ],
-    errorElement: <Error />
+    errorElement: <Error />,
   },
-  
-])
+]);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<RouterProvider router={appRouter} />)
+root.render(<RouterProvider router={appRouter} />);
