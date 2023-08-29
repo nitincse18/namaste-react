@@ -1,15 +1,19 @@
 import logo from '../../public/image/logo.png'
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
  import { Link } from 'react-router-dom';
 import Contact from './Contact';
-import useOnlineStatus from '../../utils/useOnlineStatus';
+import useOnlineStatus from '../utils/useOnlineStatus';
+import UserContext from '../utils/UserContext';
 
 const Header = () => {
 
   const [btnName, setBtnName] = useState('Login')
   const [title, setTitle] = useState('')
 
-  const onlineStatus = useOnlineStatus()
+  const onlineStatus = useOnlineStatus();
+
+  const {loggedInUser} = useContext(UserContext);
+
 
   // if no dependency array => useEffect is called on every render
   // if dependency array is empty = [] => useEffect is called on initial render(just once)
@@ -38,8 +42,15 @@ const Header = () => {
             <li className='px-4'>
               <Link to="/grocery">Grocery</Link> 
             </li>
-            <li className='px-4'>Profile</li>
-            <button className='login' onClick={() => btnName === 'Login' ? setBtnName("Logout") : setBtnName("Login")}>{btnName}</button>
+            
+            <button className='login' 
+              onClick={() => btnName === 'Login' ? 
+              setBtnName("Logout") : 
+              setBtnName("Login")}>
+                {btnName}
+            </button>
+
+            <li className='px-4 font-bold'>{loggedInUser}</li>
           </ul>
         </div>
       </div>

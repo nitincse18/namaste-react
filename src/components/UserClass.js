@@ -16,7 +16,6 @@ class UserClass extends React.Component {
     }
 
     async componentDidMount() {
-        console.log(this.props.name, 'Child component did mount');
         const data = await fetch('https://api.github.com/users/editi-bft');
         const json = await  data.json();
 
@@ -40,7 +39,6 @@ class UserClass extends React.Component {
         // const { name, location } = this.props;
         const {name, location, login, avatar_url} = this.state.userInfo;
 
-        console.log(this.props.name,"Child Render")
         return( 
         <div className="user-card">
 

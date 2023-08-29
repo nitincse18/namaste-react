@@ -1,7 +1,8 @@
-import { CDN_URL } from "../../utils/constants"
+import { CDN_URL } from "../utils/constants"
 
 const RestaurantCard = (props) => {
     const  {restData} = props
+
     const {name, cuisines, avgRating, costForTwo, deliveryTime, cloudinaryImageId} = restData
     return (
       <div className="m-4 p-4 w-[250px] bg-gray-100 rounded-lg  hover:bg-gray-300">
@@ -14,5 +15,19 @@ const RestaurantCard = (props) => {
       </div>
     )
   }
+
+
+  export const withPromtedLabel = (RestaurantCard) => {
+    return (props) => {
+      return (
+        <div>
+          <label className="absolute bg-black text-white m-2 p-2 rounded-lg">
+            Promoted
+          </label>
+          <RestaurantCard {...props} />
+        </div>
+      );
+    };
+  };
 
 export default RestaurantCard;
