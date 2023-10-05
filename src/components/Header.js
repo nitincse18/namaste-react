@@ -1,7 +1,6 @@
-import logo from '../../public/image/logo.png'
+// import logo from '../../public/image/logo.png'
 import { useContext, useEffect, useState } from 'react';
- import { Link } from 'react-router-dom';
-import Contact from './Contact';
+import { Link } from 'react-router-dom';
 import useOnlineStatus from '../utils/useOnlineStatus';
 import UserContext from '../utils/UserContext';
 import { useSelector } from 'react-redux';
@@ -30,7 +29,7 @@ const Header = () => {
     return (
       <div className="flex justify-between bg-pink-100 shadow-lg sm:bg-yellow-100 lg:bg-green-100">
         <div className="logo-container">
-          <img className="w-56" src={logo} />
+          <img className="w-56" src='https://www.zdnet.com/a/img/resize/fadda7dddd7f97cc0f0e055ce4b2c736d16a394e/2023/06/05/79a43eb8-ce38-488c-8cc0-e04699aaca7f/bing.jpg?auto=webp&fit=crop&height=1200&width=1200' />
         </div>
         <div className="flex items-center">
           <ul className='flex p-4 m-4'>
